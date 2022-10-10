@@ -4,18 +4,20 @@ import json
 
 cache = RedisLRU(redis_client)
 
-redis_client.flushdb()
+# redis_client.flushdb()
+
 
 def show_cache():
     for key in redis_client.scan_iter():
         print('Key:', key)
         print('Value:', redis_client.get(key))
 
+
 class LruCache:
     def __init__(self, func):
         self.func = func
 
-    def __call__(self, *args, **kwds):
+    def __call__(self, *args, **kwargs):
         key = args[0]
         if cache.get(key) is not None:
             value_json = cache.get(key)
@@ -23,7 +25,7 @@ class LruCache:
             print(value)
             show_cache()
         else:
-            value=self.func(*args, **kwds)
+            value = self.func(*args, **kwargs)
             value_json = json.dumps(value)
             cache.set(key, value_json)
             print(value)

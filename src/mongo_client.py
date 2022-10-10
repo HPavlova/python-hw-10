@@ -1,6 +1,5 @@
-from time import clock_getres
-from mongoengine import connect
 import configparser
+from mongoengine import connect
 
 
 config = configparser.ConfigParser()
@@ -11,4 +10,5 @@ mongodb_pass = config.get('DB', 'pass')
 db_name = config.get('DB', 'db_name')
 domain = config.get('DB', 'domain')
 
-mongo_client = connect(host=f"""mongodb+srv://{mongo_user}:{mongodb_pass}@{domain}/{db_name}?retryWrites=true&w=majority""", ssl=True)
+
+mongo_client = connect(db=db_name, username=mongo_user, password=mongodb_pass, host=f"mongodb+srv://{mongo_user}:{mongodb_pass}@{domain}/{db_name}?retryWrites=true&w=majority")
